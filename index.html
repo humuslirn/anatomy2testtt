@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Анатомия · Спланхнология · Тест (102 вопроса)</title>
+<style>
+  :root{--bg:#f4f6fb;--card:#fff;--text:#1f2937;--muted:#6b7280;--accent:#2563eb;--border:#e5e7eb}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.45}
+  header{position:sticky;top:0;z-index:10;background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;padding:14px 20px;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+  header h1{margin:0;font-size:18px}
+  header .sub{font-size:13px;opacity:.85;margin-top:4px}
+  .wrap{max-width:1000px;margin:0 auto;padding:18px}
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:16px;position:sticky;top:74px;z-index:9;box-shadow:0 4px 14px rgba(0,0,0,.05)}
+  .toolbar .progress{flex:1;min-width:160px}
+  .bar{height:10px;background:#e5e7eb;border-radius:99px;overflow:hidden}
+  .bar>i{display:block;height:100%;width:0%;background:linear-gradient(90deg,#22c55e,#16a34a);transition:width .25s}
+  .toolbar small{color:var(--muted);white-space:nowrap}
+  button{cursor:pointer;border:0;border-radius:10px;padding:9px 14px;font-weight:600;font-size:14px;transition:.15s}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-primary:hover{background:#1d4ed8}
+  .btn-ghost{background:#eef2ff;color:#1e3a8a}
+  .btn-ghost:hover{background:#e0e7ff}
+  .btn-danger{background:#fee2e2;color:#991b1b}
+  .btn-danger:hover{background:#fecaca}
+  .btn-answer{background:#f59e0b;color:#fff;margin-top:10px;padding:8px 16px;font-size:13.5px}
+  .btn-answer:hover{background:#d97706}
+  .btn-answer:disabled{background:#cbd5e1;cursor:default}
+  .section{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:16px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.04)}
+  .section>summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;font-size:15px;background:#f8fafc;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center}
+  .section>summary::-webkit-details-marker{display:none}
+  .section>summary .badge{font-size:12px;font-weight:600;color:#1e40af;background:#dbeafe;padding:2px 8px;border-radius:99px}
+  .q{padding:14px 16px;border-bottom:1px solid #f1f5f9}
+  .q:last-child{border-bottom:0}
+  .q .title{font-weight:600;margin-bottom:8px}
+  .q .title .num{color:var(--muted);font-weight:700;margin-right:6px}
+  label.opt{display:flex;gap:10px;align-items:flex-start;padding:7px 9px;border-radius:9px;cursor:pointer;transition:.12s;border:1px solid transparent}
+  label.opt:hover{background:#f8fafc;border-color:#e2e8f0}
+  label.opt input{margin-top:3px;accent-color:var(--accent);flex:0 0 auto}
+  label.opt.correct{background:#f0fdf4;border-color:#bbf7d0}
+  label.opt.wrong{background:#fef2f2;border-color:#fecaca}
+  label.opt.disabled{cursor:default}
+  .feedback{margin-top:8px;font-size:13.5px;padding:8px 10px;border-radius:8px;display:none}
+  .feedback.show{display:block}
+  .feedback.ok{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
+  .feedback.bad{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
+  .result{display:none;margin-top:6px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.05)}
+  .result.show{display:block}
+  .result h2{margin:0 0 6px;font-size:22px}
+  .result .score{font-size:34px;font-weight:800;color:#1d4ed8}
+  .result .msg{color:var(--muted);margin-top:6px}
+  .result .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:14px}
+  .result .cell{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:10px}
+  .result .cell b{display:block;font-size:18px}
+  .totop{position:fixed;right:18px;bottom:18px;width:44px;height:44px;border-radius:50%;background:var(--accent);color:#fff;font-size:20px;display:none;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(37,99,235,.4);z-index:20;border:0}
+  .totop.show{display:flex}
+  @media(max-width:600px){.toolbar{top:0;border-radius:0;margin:-1px -18px 16px;padding:12px 18px}.q{padding:12px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Анатомия · Спланхнология — тест</h1>
+  <div class="sub">102 вопроса · 19 разделов · кнопка «Ответить» на каждый вопрос</div>
+</header>
+<div class="wrap">
+  <div class="toolbar">
+    <div class="progress"><div class="bar"><i id="bar"></i></div><small id="progressText">Отвечено: 0 из 0</small></div>
+    <button class="btn-primary" id="checkAll">Проверить всё</button>
+    <button class="btn-ghost" id="showAll">Показать ответы</button>
+    <button class="btn-danger" id="resetAll">Сбросить</button>
+  </div>
+  <div id="quiz"></div>
+  <div class="result" id="result">
+    <h2>Результат</h2>
+    <div class="score" id="score">0%</div>
+    <div class="msg" id="scoreMsg"></div>
+    <div class="grid">
+      <div class="cell">Всего вопросов<b id="rTotal">0</b></div>
+      <div class="cell">Полностью верно<b id="rFull">0</b></div>
+      <div class="cell">Частично<b id="rPart">0</b></div>
+      <div class="cell">Неверно<b id="rWrong">0</b></div>
+    </div>
+  </div>
+</div>
+<button class="totop" id="totop" title="Наверх">↑</button>
+<script>
+/* ===== ДАННЫЕ: ответы перенесены из проверенного PDF ===== */
+const DATA=[
+{title:"01. Глотка",questions:[
+{q:"01.1 Глотка (pharynx):",opts:["является органом пищеварительной системы","является органом шеи","относится к дыхательным путям","фиксирована к небным костям","фиксирована к крыльям клиновидной кости"],correct:[0,1,2]},
+{q:"01.2 Глотка (pharynx) сообщается:",opts:["с барабанной полостью (cavitas tympani)","со средостением (mediastinum)","с ротовой полостью (cavitas oris)","с пищеводом (oesophagus)","с носовой полостью (cavitas nasi)"],correct:[0,2,3,4]},
+{q:"01.3 Слизистая оболочка носовой части глотки (pars nasalis pharyngis):",opts:["образует складки","складок не имеет","прилежит к глоточно-базилярной фасции (fascia pharyngobasilaris)","прилежит к подслизистой основе","содержит три миндалины"],correct:[1,2,4]},
+{q:"01.4 Мышечная оболочка глотки (pharynx):",opts:["имеет два слоя — продольный и циркулярный","образована гладкой мышечной тканью","имеет три слоя — продольный, циркулярный, косой","образована поперечнополосатой мышечной тканью","содержит три констриктора"],correct:[0,3,4]},
+{q:"01.5 Глотка (pharynx):",opts:["переходит в пищевод на уровне V шейного позвонка (CV)","переходит в пищевод на уровне VI–VII шейных позвонков (CVI–CVII)","снаружи покрыта серозной оболочкой","переходит в гортань на уровне IV шейного позвонка (CIV)","снаружи покрыта адвентициальной оболочкой"],correct:[1,4]},
+{q:"01.6 Рельеф слизистой оболочки носовой части глотки (pars nasalis pharyngis) образован:",opts:["продольными складками","циркулярными складками","глоточной миндалиной (tonsilla pharyngealis)","небной миндалиной (tonsilla palatina)","трубными валиками (torus tubarius)"],correct:[2,4]},
+{q:"01.7 Отверстие слуховой трубы (ostium tubae auditivae) расположено:",opts:["в ротовой части глотки (pars oralis pharyngis)","в гортани (larynx)","в носовой части глотки (pars nasalis pharyngis)","в гортанной части глотки (pars laryngea pharyngis)","в пищеводе (oesophagus)"],correct:[2]}
+]},
+{title:"02. Пищевод и желудок",questions:[
+{q:"02.1 В пищеводе (oesophagus) выделяют:",opts:["шейную часть","грудную часть","верхнюю часть","брюшную часть","нижнюю часть"],correct:[0,1,3]},
+{q:"02.2 Пищевод (oesophagus) расположен:",opts:["в области шеи","в среднем нижнем средостении","в заднем нижнем средостении","в переднем нижнем средостении","в брюшной полости"],correct:[0,2,4]},
+{q:"02.3 Пищевод (oesophagus) расположен позади:",opts:["гортани (larynx)","трахеи (trachea)","глотки (pharynx)","дуги аорты (arcus aortae)","правого главного бронха (bronchus principalis dexter)"],correct:[1,3]},
+{q:"02.4 Слизистая оболочка пищевода (oesophagus):",opts:["прилежит к подслизистой основе","прилежит к мышечной оболочке","образует продольные складки","образует циркулярные складки","содержит одиночные лимфоидные узелки (noduli lymphoidei solitarii)"],correct:[0,2,4]},
+{q:"02.5 Сужения пищевода (oesophagus) расположены:",opts:["в месте перехода глотки в пищевод","в месте прилегания к пищеводу трахеи","в месте прилегания к пищеводу левого главного бронха","в месте прилегания к пищеводу правого главного бронха","в месте перехода пищевода через диафрагму"],correct:[0,2,4]},
+{q:"02.6 В желудке (gaster) различают:",opts:["кардиальную часть (pars cardiaca)","большая кривизна (curvatura major)","дно (fundus)","тело (corpus)","пилорическую часть (pars pylorica)"],correct:[0,2,3,4]},
+{q:"02.7 Слизистая оболочка желудка (gaster) имеет:",opts:["ворсинки","крипты","желудочные поля (areae gastricaae)","продольные складки (plicae longitudinales) на малой кривизне","железы"],correct:[2,3,4]},
+{q:"02.8 Рельеф слизистой оболочки желудка (gaster) имеет:",opts:["желудочные ямочки (foveolae gastricaae)","малый дуоденальный сосочек (papilla duodeni minor)","желудочные поля (areae gastricaae)","циркулярные складки (plicae circulares)","продольные складки (plicae longitudinales)"],correct:[0,2,4]},
+{q:"02.9 Мышечная оболочка желудка (gaster):",opts:["имеет 3 слоя","имеет слой косых волокон (fibrae obliquae)","имеет слой циркулярных волокон (stratum circulare)","образует сфинктер привратника (m. sphincter pyloricus)","образует мышечные ленты (taeniae coli)"],correct:[0,1,2,3]},
+{q:"02.10 Для слизистой желудка (gaster) характерно наличие:",opts:["желудочных ямочек (foveolae gastricaae)","одиночных лимфоидных узелков (noduli lymphoidei solitarii)","групповых лимфоидных узелков (noduli lymphoidei aggregati)","продольных складок по малой кривизне","сфинктера привратника (m. sphincter pyloricus)"],correct:[0,1,3]},
+{q:"02.11 Части желудка (gaster) имеют:",opts:["малую кривизну (curvatura minor)","большую кривизну (curvatura major)","нисходящую часть (pars descendens)","переднюю стенку (paries ventriculi anterior)","заднюю стенку (paries ventriculi posterior)"],correct:[0,1,3,4]}
+]},
+{title:"03. Двенадцатиперстная кишка",questions:[
+{q:"03.1 Брыжеечные части тонкой кишки (intestinum tenue):",opts:["слепая кишка (caecum)","ободочная кишка (colon)","подвздошная кишка (ileum)","тощая кишка (jejunum)","двенадцатиперстная кишка (duodenum)"],correct:[2,3]},
+{q:"03.2 Части двенадцатиперстной кишки (duodenum):",opts:["кардиальная часть (pars cardiaca)","пилорическая часть (pars pylorica)","нисходящая часть (pars descendens)","горизонтальная часть (pars horizontalis)","восходящая часть (pars ascendens)"],correct:[2,3,4]},
+{q:"03.3 Слизистая оболочка двенадцатиперстной кишки (duodenum) образует:",opts:["полулунные складки (plicae semilunares)","циркулярные складки (plicae circulares)","кишечные ворсинки (villi intestinales)","кишечные железы (крипты) (glandulae intestinales)","многочисленные продольные складки"],correct:[1,2,3]},
+{q:"03.4 В слизистой оболочке двенадцатиперстной кишки (duodenum) различают:",opts:["циркулярные складки (plicae circulares)","полулунные складки (plicae semilunares)","ворсинки (villi intestinales)","групповые лимфоидные узелки (noduli lymphoidei aggregati)","большой дуоденальный сосочек (papilla duodeni major)"],correct:[0,2,4]},
+{q:"03.5 Двенадцатиперстная кишка (duodenum) имеет:",opts:["4 части","большой дуоденальный сосочек (papilla duodeni major)","продольную складку","брыжейку (mesenterium)","многочисленные продольные складки"],correct:[0,1,2]},
+{q:"03.6 Двенадцатиперстная кишка (duodenum):",opts:["покрыта брюшиной (peritoneum) со всех сторон","следует сразу после желудка (gaster)","следует сразу после тощей кишки (jejunum)","имеет верхнюю часть (pars superior)","в неё открывается общий желчный проток (ductus choledochus)"],correct:[1,3,4]}
+]},
+{title:"04. Тощая и подвздошная кишки",questions:[
+{q:"04.1 Брыжеечные части тонкой кишки (intestinum tenue):",opts:["двенадцатиперстная кишка (duodenum)","подвздошная кишка (ileum)","тощая кишка (jejunum)","слепая кишка (cecum)","сигмовидная кишка (colon sigmoideum)"],correct:[1,2]},
+{q:"04.2 Тощая кишка (jejunum):",opts:["расположена после двенадцатиперстной кишки (duodenum)","слизистая содержит одиночные лимфоидные узелки (noduli lymphoidei solitarii)","покрыта брюшиной (peritoneum) с трех сторон (мезоперитонеально)","имеет сальниковую ленту (taenia omentalis)","в неё открывается общий желчный проток (ductus choledochus)"],correct:[0,1]},
+{q:"04.3 Подвздошная кишка (ileum):",opts:["расположена после тощей кишки (jejunum)","расположена после двенадцатиперстной кишки (duodenum)","расположена между тощей (jejunum) и толстой (intestinum crassum) кишками","покрыта брюшиной (peritoneum) с трех сторон (мезоперитонеально)","имеет брыжейку (mesenterium)"],correct:[0,2,4]},
+{q:"04.4 Подвздошная кишка (ileum):",opts:["мышечная оболочка (tunica muscularis) состоит из двух слоев","мышечная оболочка (tunica muscularis) состоит из трех слоев","слизистая оболочка образует круговые (циркулярные) складки (plicae circulares)","слизистая содержит групповые лимфоидные узелки (noduli lymphoidei aggregati)","имеет кишечные ленты (taeniae)"],correct:[0,2,3]},
+{q:"04.5 Слизистая оболочка подвздошной кишки (ileum) имеет:",opts:["полулунные складки (plicae semilunares)","продольные складки (plicae longitudinales)","циркулярные складки (plicae circulares)","кишечные ворсинки (villi intestinales)","групповые лимфоидные узелки (noduli lymphoidei aggregati)"],correct:[2,3,4]}
+]},
+{title:"05. Толстая кишка",questions:[
+{q:"05.1 Отделы толстой кишки (intestinum crassum):",opts:["слепая кишка (caecum)","подвздошная кишка (ileum)","двенадцатиперстная кишка (duodenum)","сигмовидная кишка (colon sigmoideum)","прямая кишка (rectum)"],correct:[0,3,4]},
+{q:"05.2 Ободочная кишка (colon) характеризуется наличием:",opts:["гаустр (haustra coli)","сальниковых отростков (appendices epiploicae)","кишечных лент (taeniae coli)","кишечных ворсинок (villi intestinales)","групповых лимфоидных узелков (noduli lymphoidei aggregati)"],correct:[0,1,2]},
+{q:"05.3 Прямая кишка (rectum) имеет:",opts:["анальный канал (canalis analis)","внутренний сфинктер (m. sphincter ani internus)","наружный сфинктер (m. sphincter ani externus)","анальные миндалины","2 изгиба (flexura)"],correct:[0,1,2,4]},
+{q:"05.4 Прямая кишка (rectum):",opts:["расположена после сигмовидной ободочной кишки (colon sigmoideum)","расположена в полости малого таза","рельеф слизистой оболочки представлен поперечными и продольными складками","имеет брыжейку (mesocolon)","имеет сфинктер привратника (m. sphincter pyloricus)"],correct:[0,1,2]}
+]},
+{title:"06. Печень",questions:[
+{q:"06.1 В печени (hepar) выделяют:",opts:["диафрагмальную и висцеральную поверхности (facies diaphragmatica et visceralis)","переднюю поверхность (facies anterior)","верхний край (margo superior)","хвостатую долю (lobus caudatus)","нижний край (margo inferior)"],correct:[0,3,4]},
+{q:"06.2 Структурно-функциональной единицей печени (hepar) является:",opts:["печеночный сегмент (segmentum hepatis)","гепатоцит","печеночная долька (lobulus hepatis)","доля печени (lobus hepatis)","печеночная балка"],correct:[2]},
+{q:"06.3 Печень (hepar):",opts:["имеет 2 доли: правую и левую (lobus hepatis)","является паренхиматозным органом","покрыта серозной оболочкой (tunica serosa)","является железой внешней секреции","является железой внутренней секреции"],correct:[0,1,2,3]},
+{q:"06.4 Ворота печени (porta hepatis):",opts:["расположены на диафрагмальной поверхности печени (facies diaphragmatica)","это поперечная борозда на висцеральной поверхности печени (facies visceralis)","через них в печень входят печеночная артерия и воротная вена","содержат 2–3 печеночные вены","через них из печени выходят правый и левый печеночные протоки"],correct:[1,2,4]}
+]},
+{title:"07. Брюшина и брюшинная полость",questions:[
+{q:"07.1 Отделы верхнего этажа брюшинной полости (cavitas peritonealis):",opts:["правый брыжеечный синус (sinus mesentericus dexter)","пузырно-прямокишечное углубление (excavatio rectovesicalis)","сальниковая сумка (bursa omentalis)","печеночная сумка (bursa hepatica)","преджелудочная сумка (bursa pregastrica)"],correct:[2,3,4]},
+{q:"07.2 С трех сторон (мезоперитонеально) покрыты брюшиной:",opts:["желудок (gaster)","двенадцатиперстная кишка (duodenum)","подвздошная кишка (ileum)","восходящая ободочная кишка (colon ascendens)","нисходящая ободочная кишка (colon descendens)"],correct:[3,4]},
+{q:"07.3 Со всех сторон (интраперитонеально) покрыты брюшиной:",opts:["желудок (gaster)","двенадцатиперстная кишка (duodenum)","поперечная ободочная кишка (colon transversum)","восходящая ободочная кишка (colon ascendens)","подвздошная кишка (ileum)"],correct:[0,2,4]},
+{q:"07.4 Ретроперитонеально расположены:",opts:["желудок (gaster)","нисходящий отдел двенадцатиперстной кишки (duodenum)","поперечная ободочная кишка (colon transversum)","восходящая ободочная кишка (colon ascendens)","поджелудочная железа (pancreas)"],correct:[1,4]},
+{q:"07.5 Брюшинная полость (cavitas peritonealis) ограничена:",opts:["передней брюшной стенкой","диафрагмой","париетальной брюшиной (peritoneum parietale)","висцеральной брюшиной (peritoneum viscerale)","внутрибрюшной фасцией"],correct:[2,3]},
+{q:"07.6 Брюшинная полость (cavitas peritonealis):",opts:["содержит органы пищеварительной системы","включает забрюшинное пространство","ограничена париетальным и висцеральным листками брюшины","содержит серозную жидкость","содержит почки"],correct:[2,3]},
+{q:"07.7 Брюшина (peritoneum):",opts:["выстлана реснитчатым эпителием","выстлана мезотелием","образована гладкой мышечной тканью","является серозной оболочкой","покрывает органы и стенки брюшной полости"],correct:[1,3,4]},
+{q:"07.8 Брюшина (peritoneum):",opts:["является адвентициальной оболочкой","образует брыжейки","выстилает стенки брюшной полости","ограничивает брюшинную полость","покрывает со всех сторон все органы, находящиеся в брюшной полости"],correct:[1,2,3]}
+]},
+{title:"08. Носовая полость и верхние дыхательные пути",questions:[
+{q:"08.1 К верхним дыхательным путям относятся:",opts:["гортань (larynx)","трахея (trachea)","носовая часть глотки (pars nasalis pharyngis)","ротовая часть глотки (pars oralis pharyngis)","носовая полость (cavitas nasi)"],correct:[2,3,4]},
+{q:"08.2 В носовой полости (cavitas nasi) выделяют:",opts:["подголосовую полость (cavitas infraglottica)","вестибулярное поле (area vestibularis)","дыхательную область (regio respiratoria)","обонятельную область (regio olfactoria)","решетчатую вырезку (incisura ethmoidalis)"],correct:[1,2,3]},
+{q:"08.3 Функции носовой полости (cavitas nasi):",opts:["проведение воздуха","согревание вдыхаемого воздуха","голосообразование","увлажнение вдыхаемого воздуха","очищение вдыхаемого воздуха"],correct:[0,1,3,4]},
+{q:"08.4 Полость носа (cavitas nasi):",opts:["относится к верхним дыхательным путям","сообщается с глоткой посредством хоан (choanae)","сообщается с глоткой посредством отверстия слуховой трубы (ostium tubae auditivae)","относится к средним дыхательным путям","относится к нижним дыхательным путям"],correct:[0,1]}
+]},
+{title:"09. Гортань",questions:[
+{q:"09.1 Вход в гортань (aditus laryngis) ограничен:",opts:["щитовидным хрящом (cartilago thyroidea)","надгортанником (epiglottis)","черпаловидными хрящами (cartilagines arytenoideae)","складками преддверия (plica vestibularis)","черпало-надгортанными складками (plica aryepiglottica)"],correct:[1,2,4]},
+{q:"09.2 Подголосовая полость (cavitas infraglottica) ограничена:",opts:["складками преддверия (plica vestibularis)","голосовыми складками (plica vocalis)","надгортанником (epiglottis)","первым хрящом трахеи (cartilago trachealis)","желудочками гортани (ventriculus laryngis)"],correct:[1]},
+{q:"09.3 Голосовая щель (rima vocalis) ограничена:",opts:["вестибулярными связками (plica vestibularis)","голосовыми связками (plica vocalis)","щитовидным хрящом (cartilago thyroidea)","клиновидными хрящами (cartilago cuneiformis)","черпаловидными хрящами (cartilago arytenoidea)"],correct:[1,4]},
+{q:"09.4 Желудочек гортани (ventriculus laryngis) ограничен:",opts:["входом в гортань (aditus laryngis)","складкой преддверия (plica vestibularis)","черпало-надгортанной складкой (plica aryepiglottica)","голосовой складкой (plica vocalis)","надгортанником (epiglottis)"],correct:[1,3]},
+{q:"09.5 Укажите мышцу, расширяющую голосовую щель (rima vocalis):",opts:["поперечная черпаловидная (m. arytenoideus transversus)","косая черпаловидная (m. arytenoideus obliquus)","латеральная перстнечерпаловидная (m. cricoarytenoideus lateralis)","задняя перстнечерпаловидная (m. cricoarytenoideus posterior)","голосовая (m. vocalis)"],correct:[3]},
+{q:"09.6 Укажите мышцы, сужающие голосовую щель (rima vocalis):",opts:["поперечная черпаловидная (m. arytenoideus transversus)","косая черпаловидная (m. arytenoideus obliquus)","голосовая (m. vocalis)","задняя перстнечерпаловидная (m. cricoarytenoideus posterior)","латеральная перстнечерпаловидная (m. cricoarytenoideus lateralis)"],correct:[0,1,4]},
+{q:"09.7 Преддверие гортани (vestibulum laryngis) ограничено:",opts:["голосовой щелью (rima vocalis)","желудочками гортани (vestibulum laryngis)","входом в гортань (aditus laryngis)","перстневидным хрящом (cartilago cricoidea)","складками преддверия (plica vestibularis)"],correct:[2,4]}
+]},
+{title:"10. Трахея и главные бронхи",questions:[
+{q:"10.1 Трахея (trachea):",opts:["состоит из 16–20 замкнутых хрящевых колец","имеет шейную и грудную части","заканчивается на уровне верхнего края VI грудного позвонка","начинается на уровне нижнего края VI шейного позвонка","находится в верхнем средостении"],correct:[1,3,4]},
+{q:"10.2 Место окончания трахеи:",opts:["является делением трахеи на два главных бронха (bronchus principalis)","называется бифуркацией трахеи (bifurcatio tracheae)","находится на уровне верхнего края V грудного позвонка","находится на уровне верхнего края IV грудного позвонка","соответствует килю трахеи (carina tracheae)"],correct:[0,1,2,4]},
+{q:"10.3 Позади трахеи расположен:",opts:["пищевод (oesophagus)","дуга аорты (arcus aortae)","тимус (thymus)","глотка (pharynx)","гортань (larynx)"],correct:[0]},
+{q:"10.4 Правый главный бронх (bronchus principalis dexter):",opts:["расположен более вертикально, чем левый главный бронх","длиннее левого главного бронха","шире левого главного бронха","содержит в стенке 9–12 хрящевых полуколец","делится на три долевых бронха"],correct:[0,2,4]},
+{q:"10.5 Левый главный бронх (bronchus principalis sinister):",opts:["расположен более вертикально, чем правый главный бронх","длиннее правого главного бронха","шире правого главного бронха","содержит в стенке 6–8 хрящевых полуколец","проходит под дугой аорты (arcus aortae)"],correct:[1,4]}
+]},
+{title:"11. Лёгкие, плевра, средостение",questions:[
+{q:"11.1 Структурные полимеры легкого:",opts:["ацинус","долька","доля","сегмент","сектор"],correct:[0,1,2,3]},
+{q:"11.2 Структурно-функциональной единицей легкого является:",opts:["ацинус","долька","доля","сегмент","сектор"],correct:[0]},
+{q:"11.3 В состав ацинуса легкого входят:",opts:["сегментарный бронх","дольковый бронх","альвеолярные мешочки","дыхательные бронхиолы","альвеолярные ходы"],correct:[2,3,4]},
+{q:"11.4 Плевра (pleura):",opts:["является серозной оболочкой","расположена в переднем средостении","имеет висцеральный листок (pleura visceralis)","имеет париетальный листок (pleura parietalis)","расположена в среднем средостении"],correct:[0,2,3]},
+{q:"11.5 У легкого выделяют:",opts:["висцеральную поверхность","основание легкого","верхушку легкого","верхний край","нижний край"],correct:[1,2,4]},
+{q:"11.6 В среднем нижнем средостении расположены:",opts:["сердце (cor)","главные бронхи (bronchus principalis)","пищевод (oesophagus)","вилочковая железа (thymus)","трахея (trachea)"],correct:[0,1]},
+{q:"11.7 Нижнее средостение делится на:",opts:["правое","переднее","среднее","заднее","левое"],correct:[1,2,3]},
+{q:"11.8 В среднем нижнем средостении расположены:",opts:["сердце (cor)","главные бронхи (bronchus principalis)","диафрагмальные нервы","вилочковая железа (thymus)","трахея (trachea)"],correct:[0,1,2]}
+]},
+{title:"12. Почки",questions:[
+{q:"12.1 К фиксирующему аппарату почек (ren) относятся:",opts:["жировая капсула почки","«почечная ножка»","малый сальник (omentum minus)","почечное ложе","внутрибрюшное давление"],correct:[0,1,3,4]},
+{q:"12.2 Почечное ложе образуют:",opts:["квадратная мышца поясницы (m. quadratus lumborum)","внутренняя косая мышца живота (m. obliquus internus abdominis)","большая поясничная мышца (m. psoas major)","поперечная мышца живота (m. transversus abdominis)","диафрагма (diaphragma)"],correct:[0,2,3,4]},
+{q:"12.3 Оболочки почки (ren):",opts:["фиброзная капсула (capsula fibrosa)","жировая капсула (capsula adiposa)","белочная оболочка (tunica albuginea)","почечная фасция (fascia renalis)","мышечная оболочка (tunica muscularis)"],correct:[0,1,3]},
+{q:"12.4 В почке (ren) выделяют:",opts:["клубочковую зону (zona glomerulosa)","мозговое вещество (medulla renalis)","пучковую зону (zona fasciculata)","корковое вещество (cortex renalis)","сетчатую зону (zona reticularis)"],correct:[1,3]},
+{q:"12.5 Ворота почки (hilum renale) находятся:",opts:["на передней поверхности (facies anterior)","на латеральном крае (margo lateralis)","на задней поверхности (facies posterior)","на медиальном крае (margo medialis)","на верхнем полюсе (extremitas superior)"],correct:[3]},
+{q:"12.6 К нефрону относятся:",opts:["дистальные извитые канальцы (tubulus contortus distalis)","сосочковые протоки (ductus papillaris)","петля Генле (ansa nephroni)","собирательные трубочки (tubulus renalis colligens)","решетчатое поле (area cribrosa)"],correct:[0,2]}
+]},
+{title:"13. Нефрон",questions:[
+{q:"13.1 Части нефрона (nephron):",opts:["дистальный извитой каналец (tubulus contortus distalis)","почечное тельце (corpusculum renale)","петля нефрона (ansa nephroni)","собирательная трубочка (tubulus renalis colligens)","проксимальный извитой каналец (tubulus contortus proximalis)"],correct:[0,1,2,4]},
+{q:"13.2 Нефрон (nephron):",opts:["структурно-функциональная единица почки","структурно-функциональная единица печени","участвует в образовании и выведении мочи","участвует только в выведении мочи","расположен в синусе почки"],correct:[0,2]},
+{q:"13.3 В какой части нефрона происходит фильтрация (первый этап образования мочи):",opts:["дистальный извитой каналец (tubulus contortus distalis)","почечное тельце (corpusculum renale)","петля нефрона (ansa nephroni)","собирательная трубочка (tubulus renalis colligens)","проксимальный извитой каналец (tubulus contortus proximalis)"],correct:[1]}
+]},
+{title:"14. Мочеточник",questions:[
+{q:"14.1 Укажите части мочеточника (ureter):",opts:["верхняя (pars superior)","брюшная (pars abdominalis)","нисходящая (pars descendens)","тазовая (pars pelvica)","внутристеночная (pars intramuralis)"],correct:[1,3,4]},
+{q:"14.2 Мочеточник (ureter):",opts:["имеет три части","выходит из лоханки (pelvis renalis)","имеет два сужения","открывается в области дна мочевого пузыря (fundus vesicae)","открывается на верхушке мочевого пузыря (apex vesicae)"],correct:[0,1,3]}
+]},
+{title:"15. Мочевой пузырь и мужская уретра",questions:[
+{q:"15.1 Наполненный мочевой пузырь (vesica urinaria) покрыт брюшиной (peritoneum):",opts:["мезоперитонеально","интраперитонеально","экстраперитонеально","ретроперитонеально","сверху, с боков и сзади"],correct:[0,4]},
+{q:"15.2 Ненаполненный мочевой пузырь (vesica urinaria) покрыт брюшиной (peritoneum):",opts:["мезоперитонеально","экстраперитонеально","интраперитонеально","сверху и с боков","сверху"],correct:[1,4]},
+{q:"15.3 Части мочевого пузыря (vesica urinaria):",opts:["дно (fundus vesicae)","верхушка (apex vesicae)","головка (caput)","тело (corpus vesicae)","шейка (cervix vesicae)"],correct:[0,1,3,4]},
+{q:"15.4 Мужской мочеиспускательный канал (urethra masculina) имеет части:",opts:["тазовую (pars pelvica)","простатическую (pars prostatica)","брюшную (pars abdominalis)","перепончатую (pars membranacea)","губчатую (pars spongiosa)"],correct:[1,3,4]}
+]},
+{title:"16. Яичко и добавочные мужские железы",questions:[
+{q:"16.1 Яичко (testis):",opts:["парная мужская половая железа","расположено в полости малого таза","является железой смешанной секреции","относится к внутренним мужским половым органам","относится к наружным половым органам"],correct:[0,2,3]},
+{q:"16.2 Яичко (testis):",opts:["покрыто белочной оболочкой (tunica albuginea)","паренхима яичка разделена на дольки (lobuli testis)","относится к наружным половым органам","содержит извитые семенные канальцы (tubuli seminiferi contorti)","содержит семявыносящий проток (ductus deferens)"],correct:[0,1,3]},
+{q:"16.3 В яичке (testis) выделяют:",opts:["извитые семенные канальцы (tubuli seminiferi contorti)","средостение (mediastinum testis)","тело яичка (corpus)","прямые семенные канальцы (tubuli seminiferi recti)","сеть яичка (rete testis)"],correct:[0,1,3,4]},
+{q:"16.4 Укажите части придатка яичка (epididymis):",opts:["головка (caput epididymidis)","извитые семенные канальцы (tubuli seminiferi contorti)","хвост (cauda epididymidis)","тело (corpus epididymidis)","прямые семенные канальцы (tubuli seminiferi recti)"],correct:[0,2,3]},
+{q:"16.5 Функция простаты (prostata) до наступления половой зрелости:",opts:["работает как мышца, является произвольным сфинктером мочеиспускательного канала","работает как мышца, является непроизвольным сфинктером мочеиспускательного канала","сперматогенез","выделяет секрет, защищающий стенки мочеиспускательного канала","до наступления половой зрелости простата отсутствует"],correct:[1]},
+{q:"16.8 В простате (prostata) выделяют доли:",opts:["переднюю (lobus anterior)","правую (lobus dexter)","заднюю (lobus posterior)","левую (lobus sinister)","верхнюю (lobus superior)"],correct:[0,1,2,3]},
+{q:"16.9 Семявыносящий проток (ductus deferens):",opts:["продолжает проток придатка яичка (ductus epididymidis)","расположен в дольках яичка (lobuli testis)","имеет тазовую часть (pars pelvica)","продолжает прямые семенные канальцы (tubuli seminiferi recti)","входит в состав семенного канатика (funiculus spermaticus)"],correct:[0,2,4]},
+{q:"16.10 Функции семенных пузырьков (vesicula seminalis):",opts:["вырабатывают сперматозоиды","выделяют секрет, образующий жидкую часть спермы (более 50% эякулята)","выделяют секрет, защищающий стенки мочеиспускательного канала от раздражения мочой","богатый фруктозой секрет поддерживает жизнеспособность сперматозоидов","участвуют в механизме выброса спермы (эякуляции) во время полового акта"],correct:[1,3,4]}
+]},
+{title:"17. Мошонка и семявыносящие пути",questions:[
+{q:"17.1 Укажите слои мошонки (scrotum):",opts:["кожа (cutis)","адвентициальная оболочка (tunica adventitia)","мясистая оболочка (tunica dartos)","слизистая оболочка (tunica mucosa)","фасция мышцы, поднимающей яичко (fascia cremasterica)"],correct:[0,2,4]},
+{q:"17.2 Части семенного канатика (funiculus spermaticus) находятся:",opts:["в мошонке (scrotum)","в паховом канале (canalis inguinalis)","в полости малого таза (тазовая часть)","в придатке яичка (epididymis)","в мочеполовой диафрагме (diaphragma urogenitalis)"],correct:[0,1]},
+{q:"17.3 Сперматогенез происходит в:",opts:["в протоках придатка яичка (ductus epididymidis)","в извитых семенных канальцах (tubuli seminiferi contorti)","в прямых семенных канальцах (tubuli seminiferi recti)","в семенном канатике (funiculus spermaticus)","в ампуле семявыносящего протока (ampulla ductus deferentis)"],correct:[1]},
+{q:"17.4 В выведении спермы участвуют:",opts:["семявыносящий проток (ductus deferens)","семявыбрасывающий проток (ductus ejaculatorius)","мочеточник","мочеиспускательный канал (urethra)","прямые семенные канальцы (tubuli seminiferi recti)"],correct:[0,1,3,4]}
+]},
+{title:"18. Матка",questions:[
+{q:"18.1 Матка (uterus) расположена:",opts:["в полости малого таза","впереди мочевого пузыря","позади мочевого пузыря","впереди прямой кишки","позади прямой кишки"],correct:[0,2,3]},
+{q:"18.2 Части матки (uterus):",opts:["дно матки (fundus uteri)","тело матки (corpus uteri)","шейку матки (cervix uteri)","перешеек матки (isthmus uteri)","маточная труба (tuba uterina)"],correct:[0,1,2,3]},
+{q:"18.3 К оболочкам матки относятся:",opts:["периметрий (perimetrium)","миометрий (myometrium)","адвентициальная оболочка (tunica adventitia)","эндометрий (endometrium)","подслизистая основа (tela submucosa)"],correct:[0,1,3]}
+]},
+{title:"19. Маточные трубы и яичники",questions:[
+{q:"19.1 Части маточной трубы (tuba uterina, salpinx):",opts:["воронка (infundibulum)","перешеек (isthmus tubae uterinae)","ворота (hilum)","ампула (ampulla tubae uterinae)","маточный конец (extremitas uterina)"],correct:[0,1,3,4]},
+{q:"19.2 К внутренним женским половым органам относят:",opts:["маточные трубы (tuba uterina)","яичники (ovarium)","влагалище (vagina)","матку (uterus)","клитор (clitoris)"],correct:[0,1,2,3]},
+{q:"19.3 У яичника различают следующие поверхности:",opts:["переднюю","заднюю","нижнюю","латеральную","медиальную"],correct:[3,4]}
+]}
+];
+
+const quiz=document.getElementById('quiz');
+let totalQ=0;
+DATA.forEach((sec,si)=>{
+  const det=document.createElement('details');
+  det.className='section'; det.open=true;
+  const nQ=sec.questions.length;
+  det.innerHTML=`<summary>${sec.title}<span class="badge">${nQ} вопр.</span></summary>`;
+  sec.questions.forEach((q,qi)=>{
+    totalQ++;
+    const block=document.createElement('div');
+    block.className='q'; block.dataset.si=si; block.dataset.qi=qi;
+    let html=`<div class="title"><span class="num">${si+1}.${qi+1}</span>${q.q}</div>`;
+    q.opts.forEach((opt,oi)=>{
+      html+=`<label class="opt"><input type="checkbox" data-si="${si}" data-qi="${qi}" data-oi="${oi}"><span>${opt}</span></label>`;
+    });
+    html+=`<button class="btn-answer">Ответить</button><div class="feedback"></div>`;
+    block.innerHTML=html;
+    det.appendChild(block);
+  });
+  quiz.appendChild(det);
+});
+
+const allBoxes=[...document.querySelectorAll('input[type=checkbox]')];
+const answeredSet=new Set();
+const checkedCount=()=>answeredSet.size;
+const updateProgress=()=>{const d=checkedCount();const p=totalQ?Math.round(d/totalQ*100):0;document.getElementById('bar').style.width=p+'%';document.getElementById('progressText').textContent=`Отвечено: ${d} из ${totalQ}`;};
+
+function evaluate(si,qi,revealAll=false){
+  const key=si+'-'+qi;
+  if(answeredSet.has(key) && !revealAll) return null;
+  const q=DATA[si].questions[qi];
+  const block=document.querySelector(`.q[data-si="${si}"][data-qi="${qi}"]`);
+  const boxes=[...block.querySelectorAll('input[type=checkbox]')];
+  const chosen=boxes.map((b,i)=>b.checked?i:-1).filter(i=>i>=0);
+  if(chosen.length===0 && !revealAll) return null;
+  const correctSet=new Set(q.correct);
+  const isCorrect=chosen.length===q.correct.length && chosen.every(i=>correctSet.has(i));
+  const isPartial=!isCorrect && chosen.some(i=>correctSet.has(i));
+  boxes.forEach((b,i)=>{
+    b.parentElement.classList.remove('correct','wrong','disabled');
+    if(correctSet.has(i)) b.parentElement.classList.add('correct');
+    else if(b.checked) b.parentElement.classList.add('wrong');
+    b.disabled=true; b.parentElement.classList.add('disabled');
+  });
+  const btn=block.querySelector('.btn-answer');
+  btn.disabled=true; btn.textContent='Проверено';
+  const fb=block.querySelector('.feedback');
+  fb.className='feedback show '+(isCorrect?'ok':'bad');
+  const correctText=q.correct.map(i=>q.opts[i]).join('; ');
+  fb.innerHTML=isCorrect?'✅ Верно!':`❌ Неверно. Правильный ответ: <b>${correctText}</b>`;
+  answeredSet.add(key); updateProgress();
+  return {isCorrect,isPartial};
+}
+
+document.querySelectorAll('.btn-answer').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const block=btn.closest('.q');
+    evaluate(+block.dataset.si,+block.dataset.qi,false);
+  });
+});
+
+document.getElementById('checkAll').addEventListener('click',()=>{
+  let full=0,part=0,wrong=0;
+  DATA.forEach((sec,si)=>sec.questions.forEach((q,qi)=>{
+    const r=evaluate(si,qi,true);
+    if(!r){return;}
+    if(r.isCorrect)full++;else if(r.isPartial)part++;else wrong++;
+  }));
+  const answered=answeredSet.size;
+  const pct=answered?Math.round(full/answered*100):0;
+  document.getElementById('score').textContent=pct+'%';
+  document.getElementById('rTotal').textContent=totalQ;
+  document.getElementById('rFull').textContent=full;
+  document.getElementById('rPart').textContent=part;
+  document.getElementById('rWrong').textContent=wrong;
+  document.getElementById('scoreMsg').textContent=
+    `Проверено ${answered} из ${totalQ}. `+
+    (pct>=90?'Отлично! Материал усвоен.':pct>=70?'Хорошо, но есть что повторить.':pct>=50?'Удовлетворительно — повторите слабые темы.':'Нужно повторить материал.');
+  document.getElementById('result').classList.add('show');
+  document.getElementById('result').scrollIntoView({behavior:'smooth'});
+});
+
+document.getElementById('showAll').addEventListener('click',()=>{
+  DATA.forEach((sec,si)=>sec.questions.forEach((q,qi)=>evaluate(si,qi,true)));
+});
+document.getElementById('resetAll').addEventListener('click',()=>location.reload());
+document.getElementById('totop').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+window.addEventListener('scroll',()=>document.getElementById('totop').classList.toggle('show',window.scrollY>400));
+updateProgress();
+</script>
+</body>
+</html>
